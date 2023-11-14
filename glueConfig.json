@@ -1,0 +1,19 @@
+{
+	"chains": [
+		{
+			"id": 1,
+			"name": "ethereum",
+			"rpc": "http://127.0.0.1:6969"
+		},
+		{
+			"name": "arbitrum",
+			"id": 42161,
+			"rpc": "http://127.0.0.1:6970"
+		},
+		{
+			"name": "optimism",
+			"id": 10,
+			"rpc": "http://127.0.0.1:6971"
+		}
+	]
+}
