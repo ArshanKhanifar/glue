@@ -30,29 +30,8 @@ const SOURCE_MSG_SENDER_INDEX = 484;
 const SOURCE_UA_INDEX = 150;
 const DESTINATION_UA_INDEX = 194;
 
-export const transformPacketToDst = (packet: string) => {
-	const postSender = '00000000000000000000000000000000000a11ce';
-	const fromEndIndex = SOURCE_MSG_SENDER_INDEX + 40;
-	const firstPart = packet.substring(
-		SOURCE_MSG_SENDER_INDEX - 250,
-		SOURCE_MSG_SENDER_INDEX,
-	);
-	const secondPart = packet.substring(fromEndIndex);
-	const preSender = extractAddress(packet, SOURCE_MSG_SENDER_INDEX);
-
-	logger.debug(
-		JSON.stringify({
-			firstPart,
-			preSender,
-			postSender,
-			secondPart,
-		}),
-	);
-
-	const deliveredPayload: Hex = `0x${firstPart}${preSender.substring(
-		2,
-	)}${secondPart}`;
-	return deliveredPayload;
+export const transformPacketToDst = (packet: string): Hex => {
+	return `0x${packet.substring(SOURCE_MSG_SENDER_INDEX - 250)}`;
 };
 
 export const receivePacket = async ({
@@ -69,7 +48,7 @@ export const receivePacket = async ({
 		chainIdLookupFromLzId[extractUint16(packet, dstChainIdIndex) as LzId];
 	const srcUa = extractAddress(packet, SOURCE_UA_INDEX);
 	const dstUa = extractAddress(packet, DESTINATION_UA_INDEX);
-	const deliveredPayload = transformPacketToDst(packet);
+	const deliveredPayload: Hex = transformPacketToDst(packet);
 
 	const defaultLibAddress = await readContract({
 		address: lzEndpointLookup[dstChain],
