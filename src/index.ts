@@ -23,9 +23,11 @@ import { watch } from './watch';
 				const config: GlueConfig = JSON.parse(content);
 				await wagmiConfig(config);
 				watch(ChainId.OPTIMISM);
+				watch(ChainId.ETHEREUM);
 				watch(ChainId.ARBITRUM);
+				watch(ChainId.ZORA);
 			} catch (e) {
-				logger.error('error reading config file');
+				logger.error('error reading config file', e);
 				return;
 			}
 		});

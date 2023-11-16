@@ -8,16 +8,17 @@ import {
 	http,
 	parseUnits,
 } from 'viem';
-import { endpointAbi } from './abis';
+import { endpointAbi } from './abis/endpointAbi';
 import {
 	chainIdLookupFromLzId,
 	lzEndpointLookup,
 	lzIdLookup,
 } from './constants';
+import { getInboundNonce } from './getInboundNonce';
 import { ChainId, LzId } from './types';
 import { logger } from './utils/logger';
 import { showBalance } from './utils/web3util';
-import { getInboundNonce, viemChainLookup } from './wagmiConfig';
+import { viemChainLookup } from './wagmiConfig';
 
 const extractAddress = (packet: string, index: number) =>
 	getAddress(`0x${packet.substring(index, index + 40)}`);
@@ -36,15 +37,21 @@ export const transformPacketToDst = (packet: string) => {
 		SOURCE_MSG_SENDER_INDEX - 250,
 		SOURCE_MSG_SENDER_INDEX,
 	);
-	const secondPart = packet.substring(fromEndIndex, fromEndIndex + 1152);
+	const secondPart = packet.substring(fromEndIndex);
+	const preSender = extractAddress(packet, SOURCE_MSG_SENDER_INDEX);
 
-	logger.debug({
-		firstPart,
-		postSender,
-		secondPart,
-	});
+	logger.debug(
+		JSON.stringify({
+			firstPart,
+			preSender,
+			postSender,
+			secondPart,
+		}),
+	);
 
-	const deliveredPayload: Hex = `0x${firstPart}${postSender}${secondPart}`;
+	const deliveredPayload: Hex = `0x${firstPart}${preSender.substring(
+		2,
+	)}${secondPart}`;
 	return deliveredPayload;
 };
 
@@ -73,12 +80,6 @@ export const receivePacket = async ({
 
 	const srcLzId = lzIdLookup[srcChain];
 
-	const inboundNonce = await getInboundNonce({
-		chainId: dstChain,
-		srcAddress: srcUa,
-		srcLzId,
-	});
-
 	const testClient = createTestClient({
 		chain: viemChainLookup[dstChain],
 		mode: 'anvil',
@@ -91,21 +92,49 @@ export const receivePacket = async ({
 
 	await testClient.impersonateAccount({ address: defaultLibAddress });
 
+	logger.info(
+		JSON.stringify({
+			srcUa,
+			dstUa,
+		}),
+	);
+
+	const srcPath = encodePacked(['address', 'address'], [srcUa, dstUa]);
+	const dstLzEndpointConfig = {
+		address: lzEndpointLookup[dstChain],
+		abi: endpointAbi,
+		chainId: dstChain,
+	};
+
+	const inboundNonce = await getInboundNonce({
+		testClient,
+		chainId: dstChain,
+		srcUa,
+		dstUa,
+		srcLzId,
+		lzEndpointConfig: dstLzEndpointConfig,
+	});
+
 	await showBalance({
 		address: defaultLibAddress,
 		chainId: dstChain,
 		name: 'defaultLibAddress before sending',
 	});
 
-	const srcEncoding = encodePacked(['address', 'address'], [srcUa, dstUa]);
-
 	logger.debug('JS Side Packet', packet);
 	logger.debug('\npayload were delivering', deliveredPayload);
 	logger.debug('\nsrcLzId', srcLzId);
-	logger.debug('encoding', srcEncoding);
+	logger.debug('encoding', srcPath);
 	logger.debug('destination address', dstUa);
 	logger.debug('nonce', inboundNonce);
 	logger.debug('dstGas', BigInt(2e6));
+
+	const checkHasStoredPayload = async () =>
+		readContract({
+			...dstLzEndpointConfig,
+			functionName: 'hasStoredPayload',
+			args: [srcLzId, srcPath],
+		});
 
 	const tx = await testClient.sendUnsignedTransaction({
 		from: defaultLibAddress,
@@ -115,9 +144,9 @@ export const receivePacket = async ({
 			functionName: 'receivePayload',
 			args: [
 				srcLzId,
-				srcEncoding,
+				srcPath,
 				dstUa,
-				inboundNonce,
+				inboundNonce + 1n,
 				BigInt(2e6),
 				deliveredPayload,
 			],
@@ -133,8 +162,13 @@ export const receivePacket = async ({
 		chainId: dstChain,
 	});
 
-	logger.info('tx receipt', receipt.transactionHash, receipt.status);
-
-	const receiver = getAddress(`0x${'0'.repeat(37)}b0b`);
-	await showBalance({ address: receiver, chainId: dstChain, name: 'bob' });
+	if (await checkHasStoredPayload()) {
+		logger.error(
+			'something went wrong delivering',
+			receipt.transactionHash,
+			receipt.status,
+		);
+	} else {
+		logger.succeed('delivered', receipt.transactionHash, receipt.status);
+	}
 };

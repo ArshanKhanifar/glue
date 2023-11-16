@@ -1,5 +1,5 @@
 import { watchContractEvent } from '@wagmi/core';
-import { packetAbi } from './abis';
+import { packetAbi } from './abis/packetAbi';
 import { lzLightNodeLookup } from './constants';
 import { receivePacket } from './receivePacket';
 import { ChainId } from './types';
