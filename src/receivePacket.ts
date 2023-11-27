@@ -6,6 +6,7 @@ import {
 	getAddress,
 	Hex,
 	http,
+	parseEther,
 	parseUnits,
 } from 'viem';
 import { endpointAbi } from './abis/endpointAbi';
@@ -68,6 +69,11 @@ export const receivePacket = async ({
 	if (!testClient) {
 		throw Error("couldn't get wallet client");
 	}
+
+	await testClient.setBalance({
+		address: defaultLibAddress,
+		value: parseEther('10'),
+	});
 
 	await testClient.impersonateAccount({ address: defaultLibAddress });
 

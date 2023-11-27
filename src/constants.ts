@@ -6,12 +6,16 @@ export const lzLightNodeLookup: Record<ChainId, Address> = {
 	[ChainId.ARBITRUM]: '0x4D73AdB72bC3DD368966edD0f0b2148401A178E2',
 	[ChainId.OPTIMISM]: '0x4D73AdB72bC3DD368966edD0f0b2148401A178E2',
 	[ChainId.ZORA]: '0x38dE71124f7a447a01D67945a51eDcE9FF491251',
+	[ChainId.ZORA_GOERLI]: '0x55370E0fBB5f5b8dAeD978BA1c075a499eB107B8',
+	[ChainId.SEPOLIA]: '0x3aCAAf60502791D199a5a5F0B173D78229eBFe32',
 };
 export const lzEndpointLookup: Record<ChainId, Address> = {
 	[ChainId.ETHEREUM]: '0x66A71Dcef29A0fFBDBE3c6a460a3B5BC225Cd675',
 	[ChainId.ARBITRUM]: '0x3c2269811836af69497E5F486A85D7316753cf62',
 	[ChainId.OPTIMISM]: '0x3c2269811836af69497E5F486A85D7316753cf62',
 	[ChainId.ZORA]: '0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7',
+	[ChainId.SEPOLIA]: '0xae92d5aD7583AD66E49A0c67BAd18F6ba52dDDc1',
+	[ChainId.ZORA_GOERLI]: '0x83c73Da98cf733B03315aFa8758834b36a195b87',
 };
 
 export const lzIdLookup: Record<ChainId, LzId> = {
@@ -19,6 +23,8 @@ export const lzIdLookup: Record<ChainId, LzId> = {
 	[ChainId.ARBITRUM]: LzId.ARBITRUM,
 	[ChainId.OPTIMISM]: LzId.OPTIMISM,
 	[ChainId.ZORA]: LzId.ZORA,
+	[ChainId.ZORA_GOERLI]: LzId.ZORA_GOERLI,
+	[ChainId.SEPOLIA]: LzId.SEPOLIA,
 };
 
 export const chainIdLookupFromLzId: Record<LzId, ChainId> = {
@@ -26,4 +32,6 @@ export const chainIdLookupFromLzId: Record<LzId, ChainId> = {
 	[LzId.ARBITRUM]: ChainId.ARBITRUM,
 	[LzId.OPTIMISM]: ChainId.OPTIMISM,
 	[LzId.ZORA]: ChainId.ZORA,
+	[LzId.ZORA_GOERLI]: ChainId.ZORA_GOERLI,
+	[LzId.SEPOLIA]: ChainId.SEPOLIA,
 };

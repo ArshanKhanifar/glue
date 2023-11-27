@@ -3,6 +3,8 @@ export enum ChainId {
 	ARBITRUM = 42161,
 	OPTIMISM = 10,
 	ZORA = 7777777,
+	ZORA_GOERLI = 999,
+	SEPOLIA = 11155111,
 }
 
 export enum LzId {
@@ -10,6 +12,8 @@ export enum LzId {
 	ARBITRUM = 110,
 	OPTIMISM = 111,
 	ZORA = 195,
+	SEPOLIA = 10161,
+	ZORA_GOERLI = 10195,
 }
 
 export type Lookup<A extends string | number | symbol, B> = {

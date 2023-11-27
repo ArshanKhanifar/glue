@@ -1,5 +1,11 @@
-import { Chain, configureChains, createConfig } from '@wagmi/core';
-import { arbitrum, mainnet, optimism, zora } from '@wagmi/core/chains';
+import { Chain, configureChains, createConfig, sepolia } from '@wagmi/core';
+import {
+	arbitrum,
+	mainnet,
+	optimism,
+	zora,
+	zoraTestnet,
+} from '@wagmi/core/chains';
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc';
 import { configDotenv } from 'dotenv';
 import { ChainId } from './types';
@@ -9,6 +15,8 @@ const wagmiChainLookup: Record<ChainId, Chain> = {
 	[ChainId.ARBITRUM]: arbitrum,
 	[ChainId.OPTIMISM]: optimism,
 	[ChainId.ZORA]: zora,
+	[ChainId.ZORA_GOERLI]: zoraTestnet,
+	[ChainId.SEPOLIA]: sepolia,
 };
 export const viemChainLookup: Record<ChainId, Chain> = {} as Record<
 	ChainId,

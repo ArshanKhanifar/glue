@@ -26,6 +26,8 @@ import { watch } from './watch';
 				watch(ChainId.ETHEREUM);
 				watch(ChainId.ARBITRUM);
 				watch(ChainId.ZORA);
+				watch(ChainId.ZORA_GOERLI);
+				watch(ChainId.SEPOLIA);
 			} catch (e) {
 				logger.error('error reading config file', e);
 				return;
