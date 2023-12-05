@@ -14,7 +14,6 @@
 	],
 	"scripts": {
 		"build": "tsup src/index.ts --format esm --clean --minify --metafile",
-		"package": "pnpm run build && mv ./dist/index.js ./dist/glue && chmod +x ./dist/glue",
 		"changeset": "changeset",
 		"dev": "tsup src/index.ts --format esm --watch --clean --onSuccess \"node dist/index.js\"",
 		"prepare": "husky install",
