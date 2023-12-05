@@ -2,12 +2,21 @@
 import { Command } from 'commander';
 import fs from 'node:fs';
 import * as process from 'process';
-import { ChainId } from './types';
 import { logger } from './utils/logger';
 import { packageJSON } from './utils/packageJson';
 import { renderTitle } from './utils/renderTitle';
 import { GlueConfig, wagmiConfig } from './wagmiConfig';
 import { watch } from './watch';
+
+const startWatching = async (config: GlueConfig) => {
+	try {
+		await wagmiConfig(config);
+		config.chains.map((c) => watch(c.id));
+	} catch (e) {
+		logger.error('error reading config file', e);
+		return;
+	}
+};
 
 (async () => {
 	renderTitle();
@@ -21,13 +30,7 @@ import { watch } from './watch';
 			try {
 				const content = fs.readFileSync(file, 'utf-8');
 				const config: GlueConfig = JSON.parse(content);
-				await wagmiConfig(config);
-				watch(ChainId.OPTIMISM);
-				watch(ChainId.ETHEREUM);
-				watch(ChainId.ARBITRUM);
-				watch(ChainId.ZORA);
-				watch(ChainId.ZORA_GOERLI);
-				watch(ChainId.SEPOLIA);
+				await startWatching(config);
 			} catch (e) {
 				logger.error('error reading config file', e);
 				return;
