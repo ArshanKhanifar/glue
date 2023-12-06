@@ -19,7 +19,7 @@
 		"prepare": "husky install",
 		"release": "changeset publish",
 		"test": "vitest",
-		"publish:package": "pnpm run build && pnpm pack && pnpm publish --no-git-checks --access public"
+		"publish:package": "pnpm run build && pnpm pack && pnpm publish --access public"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
