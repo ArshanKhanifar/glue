@@ -1,6 +1,6 @@
 {
 	"name": "@cucumber/forknet-glue",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "glues ur forknets together 🫶🏼",
 	"private": false,
 	"repository": {
