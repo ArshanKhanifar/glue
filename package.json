@@ -1,5 +1,5 @@
 {
-	"name": "glue",
+	"name": "@arshan/forknet-glue",
 	"version": "0.0.0",
 	"description": "",
 	"repository": {
@@ -17,7 +17,8 @@
 		"dev": "tsup src/index.ts --format esm --watch --clean --onSuccess \"node dist/index.js\"",
 		"prepare": "husky install",
 		"release": "changeset publish",
-		"test": "vitest"
+		"test": "vitest",
+		"publish": "pnpm run build && pnpm pack && pnpm publish"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
