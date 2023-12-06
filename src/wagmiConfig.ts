@@ -1,8 +1,12 @@
 import { Chain, configureChains, createConfig, sepolia } from '@wagmi/core';
 import {
 	arbitrum,
+	avalanche,
+	base,
+	fantom,
 	mainnet,
 	optimism,
+	polygon,
 	zora,
 	zoraTestnet,
 } from '@wagmi/core/chains';
@@ -15,6 +19,10 @@ const wagmiChainLookup: Record<ChainId, Chain> = {
 	[ChainId.ARBITRUM]: arbitrum,
 	[ChainId.OPTIMISM]: optimism,
 	[ChainId.ZORA]: zora,
+	[ChainId.BASE]: base,
+	[ChainId.FANTOM]: fantom,
+	[ChainId.AVALANCHE]: avalanche,
+	[ChainId.POLYGON]: polygon,
 	[ChainId.ZORA_GOERLI]: zoraTestnet,
 	[ChainId.SEPOLIA]: sepolia,
 };
