@@ -1,7 +1,7 @@
 {
-	"name": "forknet-glue",
+	"name": "@arshankhanifar/forknet-glue",
 	"version": "0.0.1",
-	"description": "here is a package",
+	"description": "glues ur forknets together 🫶🏼",
 	"private": false,
 	"repository": {
 		"type": "git",
@@ -19,7 +19,7 @@
 		"prepare": "husky install",
 		"release": "changeset publish",
 		"test": "vitest",
-		"publish:package": "pnpm run build && pnpm pack && pnpm publish"
+		"publish:package": "pnpm run build && pnpm pack && pnpm publish --no-git-checks"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
