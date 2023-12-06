@@ -2,6 +2,7 @@
 	"name": "@arshan/forknet-glue",
 	"version": "0.0.1",
 	"description": "",
+	"private": false,
 	"repository": {
 		"type": "git",
 		"url": ""
