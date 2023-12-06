@@ -1,5 +1,5 @@
 {
-	"name": "@arshan/forknet-glue",
+	"name": "forknet-glue",
 	"version": "0.0.1",
 	"description": "here is a package",
 	"private": false,
