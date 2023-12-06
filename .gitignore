@@ -28,3 +28,5 @@ devcontainer.env
 
 # Mac
 .DS_Store
+
+arshan-forknet-glue-*.tgz
