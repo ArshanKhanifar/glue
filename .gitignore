@@ -31,3 +31,5 @@ devcontainer.env
 
 arshan-forknet-glue-*.tgz
 arshankhanifar-forknet-glue-*.tgz
+
+package.json.decent
